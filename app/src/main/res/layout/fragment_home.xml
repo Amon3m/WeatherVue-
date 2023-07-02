@@ -1,24 +1,365 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
     android:background="@drawable/linear_background">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_ConstraintLayout">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="171dp"
-        android:layout_marginTop="324dp"
-        android:layout_marginEnd="182dp"
-        android:layout_marginBottom="388dp"
-        android:text="Home"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rectangle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:id="@+id/temp_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="49°"
+                android:textColor="@color/Primary"
+                android:textSize="100sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/date_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:paddingStart="5dp"
+                android:text="Fri,25 Feb"
+                android:textColor="@color/Secondary"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/temp_txt" />
+
+            <TextView
+                android:id="@+id/loc_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:paddingStart="5dp"
+                android:text="Montreal, Canada"
+                android:textColor="@color/Primary"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_txt" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="200dp"
+                android:layout_height="170dp"
+                android:src="@drawable/sun_test"
+                app:layout_constraintBottom_toTopOf="@+id/weather_con"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/temp_txt"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/weather_con"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="8dp"
+
+                android:paddingEnd="20dp"
+                android:text="Clear sky"
+                android:textColor="@color/Primary"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageView" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <com.airbnb.lottie.LottieAnimationView-->
+<!--            android:id="@+id/animationView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:lottie_autoPlay="true"-->
+<!--            app:lottie_loop="true"-->
+<!--            app:lottie_rawRes="@raw/search" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/hours_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/week_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+            app:layout_constraintTop_toBottomOf="@+id/hours_recyclerview"
+            tools:layout_editor_absoluteX="37dp"
+           />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/week_recyclerview"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@drawable/linear_background2"
+                >
+
+                <ImageView
+                    android:id="@+id/pressure_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="7dp"
+                    android:src="@drawable/ic_baseline_air_24"
+                    app:layout_constraintEnd_toStartOf="@+id/Humidity_img"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/pressure_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1021 hpa"
+
+
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@+id/pressure_img"
+                    app:layout_constraintStart_toStartOf="@+id/pressure_img"
+                    app:layout_constraintTop_toBottomOf="@id/pressure_img" />
+
+                <TextView
+                    android:id="@+id/pressure_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pressure"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/pressure_img"
+                    app:layout_constraintStart_toStartOf="@+id/pressure_img"
+                    app:layout_constraintTop_toBottomOf="@id/pressure_num" />
+
+<!--       Humidity        -->
+
+                <ImageView
+                    android:id="@+id/Humidity_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="7dp"
+                    android:layout_marginStart="119dp"
+                    android:src="@drawable/ic_baseline_air_24"
+                    app:layout_constraintEnd_toStartOf="@+id/Wind_img"
+                    app:layout_constraintStart_toEndOf="@+id/pressure_img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/Humidity_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="77%"
+
+
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@+id/Humidity_img"
+                    app:layout_constraintStart_toStartOf="@+id/Humidity_img"
+                    app:layout_constraintTop_toBottomOf="@id/Humidity_img" />
+
+                <TextView
+                    android:id="@+id/Humidity_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/humidity"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/Humidity_img"
+                    app:layout_constraintStart_toStartOf="@+id/Humidity_img"
+                    app:layout_constraintTop_toBottomOf="@id/Humidity_num" />
+                <!--       wind        -->
+
+                <ImageView
+                    android:id="@+id/Wind_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="7dp"
+                    android:layout_marginStart="79dp"
+                    android:src="@drawable/ic_baseline_air_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/Humidity_img"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/Wind_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2.06 m/s"
+
+
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@+id/Wind_img"
+                    app:layout_constraintStart_toStartOf="@+id/Wind_img"
+                    app:layout_constraintTop_toBottomOf="@id/Wind_img" />
+
+                <TextView
+                    android:id="@+id/Wind_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wind"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/Wind_img"
+                    app:layout_constraintStart_toStartOf="@+id/Wind_img"
+                    app:layout_constraintTop_toBottomOf="@id/Wind_num" />
+
+<!--        Cloud        -->
+
+                <ImageView
+                    android:id="@+id/Cloud_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="7dp"
+                    android:src="@drawable/ic_baseline_air_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/Violet_img"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/pressure_txt" />
+
+                <TextView
+                    android:id="@+id/Cloud_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0%"
+
+
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@+id/Cloud_img"
+                    app:layout_constraintStart_toStartOf="@+id/Cloud_img"
+                    app:layout_constraintTop_toBottomOf="@id/Cloud_img" />
+
+                <TextView
+                    android:id="@+id/Cloud_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cloud"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/Cloud_img"
+                    app:layout_constraintStart_toStartOf="@+id/Cloud_img"
+                    app:layout_constraintTop_toBottomOf="@id/Cloud_num" />
+                <!--        Violet        -->
+
+                <ImageView
+                    android:id="@+id/Violet_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="7dp"
+                    android:src="@drawable/ic_baseline_air_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/Cloud_img"
+                    app:layout_constraintEnd_toStartOf="@+id/visibility_img"
+                    app:layout_constraintStart_toEndOf="@+id/Cloud_img"
+                    app:layout_constraintTop_toTopOf="@+id/Cloud_img" />
+
+                <TextView
+                    android:id="@+id/Violet_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.0"
+
+
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@+id/Violet_img"
+                    app:layout_constraintStart_toStartOf="@+id/Violet_img"
+                    app:layout_constraintTop_toBottomOf="@id/Violet_img" />
+
+                <TextView
+                    android:id="@+id/Violet_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ultra_violet"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/Violet_img"
+                    app:layout_constraintStart_toStartOf="@+id/Violet_img"
+                    app:layout_constraintTop_toBottomOf="@id/Violet_num" />
+                <!--        visibility        -->
+
+                <ImageView
+                    android:id="@+id/visibility_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="7dp"
+                    android:src="@drawable/ic_baseline_air_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/Violet_img"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/Violet_img"
+                    app:layout_constraintTop_toTopOf="@+id/Violet_img"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/visibility_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.0"
+
+
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="@+id/visibility_img"
+                    app:layout_constraintStart_toStartOf="@+id/visibility_img"
+                    app:layout_constraintTop_toBottomOf="@id/visibility_img" />
+
+                <TextView
+                    android:id="@+id/visibilitytxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/visibility"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/visibility_img"
+                    app:layout_constraintStart_toStartOf="@+id/visibility_img"
+                    app:layout_constraintTop_toBottomOf="@id/visibility_num" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</ScrollView>

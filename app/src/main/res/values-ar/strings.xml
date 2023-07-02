@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="visibility">الرؤية</string>
+    <string name="ultra_violet">فوق بنفسجي</string>
+    <string name="cloud">غيوم</string>
+    <string name="wind">Wind</string>
+    <string name="add_favorites_locations">Add favorites locations</string>
+    <string name="to">To</string>
+    <string name="from">From</string>
+    <string name="add_alerts">Add Alerts</string>
+    <string name="language">Language</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="location">Location</string>
+    <string name="map">Map</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="meter">meter/sec</string>
+    <string name="miles">miles/hour</string>
+</resources>
