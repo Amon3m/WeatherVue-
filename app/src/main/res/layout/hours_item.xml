@@ -34,6 +34,7 @@
 
         <View
 
+            android:id="@+id/view"
             android:layout_width="111dp"
             android:layout_height="1dp"
             android:layout_marginTop="1dp"
@@ -47,12 +48,16 @@
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/sun_test"
+            android:layout_height="80dp"
+            android:layout_marginTop="10dp"
+
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/day_01d"
+            app:layout_constraintBottom_toTopOf="@+id/weather_con"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.761"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hours_txt" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
             android:id="@+id/weather_con"
@@ -61,6 +66,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="31dp"
             android:text="49°"
+            android:layout_marginTop="10dp"
             android:textColor="@color/Primary"
             android:textSize="16sp"
             android:textStyle="bold"

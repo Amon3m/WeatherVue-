@@ -17,10 +17,13 @@ class HomeViewModel(private val repoInterface: RepoInterface) : ViewModel()  {
     init {
         getWeather()
     }
+
+
+
     private fun getWeather() {
         viewModelScope.launch(Dispatchers.IO) {
 
-            repoInterface.getWeatherFromNetwork(30.013056,31.208853,"daily", units = "metric", lang = "en","ccb811f49ff661e0a43e8d8727e0387a").catch { e->
+            repoInterface.getWeatherFromNetwork(30.013056,31.208853, units = "metric", exclude = "",lang = "en", appid = "ccb811f49ff661e0a43e8d8727e0387a").catch { e->
                 _weather.emit(ApiState.Failure(e.message?:""))
             }.collect {
                 var products = it

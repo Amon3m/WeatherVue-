@@ -63,9 +63,10 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
                 android:layout_height="170dp"
-                android:src="@drawable/sun_test"
+                android:src="@drawable/day_01d"
+                android:adjustViewBounds="true"
                 app:layout_constraintBottom_toTopOf="@+id/weather_con"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/temp_txt"
@@ -78,7 +79,7 @@
                 android:layout_margin="10dp"
                 android:layout_marginBottom="8dp"
 
-                android:paddingEnd="20dp"
+
                 android:text="Clear sky"
                 android:textColor="@color/Primary"
                 android:textSize="22sp"
@@ -87,17 +88,17 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-<!--        <com.airbnb.lottie.LottieAnimationView-->
-<!--            android:id="@+id/animationView"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:lottie_autoPlay="true"-->
-<!--            app:lottie_loop="true"-->
-<!--            app:lottie_rawRes="@raw/search" />-->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/search" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/hours_recyclerview"
@@ -112,41 +113,42 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            tools:listitem="@layout/hours_item" />
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/week_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/week_item"
             android:layout_margin="10dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
             app:layout_constraintTop_toBottomOf="@+id/hours_recyclerview"
-            tools:layout_editor_absoluteX="37dp"
-           />
+            tools:layout_editor_absoluteX="37dp" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/det_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/week_recyclerview"
+            android:layout_margin="10dp"
             app:cardCornerRadius="20dp"
-            android:layout_margin="10dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/week_recyclerview"
+            tools:layout_editor_absoluteX="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:background="@drawable/linear_background2"
-                >
+
+                android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/pressure_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="7dp"
-                    android:src="@drawable/ic_baseline_air_24"
+                    android:src="@drawable/barometer"
                     app:layout_constraintEnd_toStartOf="@+id/Humidity_img"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -174,7 +176,7 @@
                     app:layout_constraintStart_toStartOf="@+id/pressure_img"
                     app:layout_constraintTop_toBottomOf="@id/pressure_num" />
 
-<!--       Humidity        -->
+                <!--       Humidity        -->
 
                 <ImageView
                     android:id="@+id/Humidity_img"
@@ -182,7 +184,7 @@
                     android:layout_height="40dp"
                     android:layout_margin="7dp"
                     android:layout_marginStart="119dp"
-                    android:src="@drawable/ic_baseline_air_24"
+                    android:src="@drawable/humidity"
                     app:layout_constraintEnd_toStartOf="@+id/Wind_img"
                     app:layout_constraintStart_toEndOf="@+id/pressure_img"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -245,14 +247,14 @@
                     app:layout_constraintStart_toStartOf="@+id/Wind_img"
                     app:layout_constraintTop_toBottomOf="@id/Wind_num" />
 
-<!--        Cloud        -->
+                <!--        Cloud        -->
 
                 <ImageView
                     android:id="@+id/Cloud_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="7dp"
-                    android:src="@drawable/ic_baseline_air_24"
+                    android:src="@drawable/cloud"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/Violet_img"
                     app:layout_constraintStart_toStartOf="parent"
@@ -288,7 +290,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="7dp"
-                    android:src="@drawable/ic_baseline_air_24"
+                    android:src="@drawable/ultraviolet"
                     app:layout_constraintBottom_toBottomOf="@+id/Cloud_img"
                     app:layout_constraintEnd_toStartOf="@+id/visibility_img"
                     app:layout_constraintStart_toEndOf="@+id/Cloud_img"
@@ -324,7 +326,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="7dp"
-                    android:src="@drawable/ic_baseline_air_24"
+                    android:src="@drawable/eye"
                     app:layout_constraintBottom_toBottomOf="@+id/Violet_img"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/Violet_img"
@@ -358,8 +360,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
