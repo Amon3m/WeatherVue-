@@ -34,6 +34,7 @@ import com.m3.weathervue.R
 import com.m3.weathervue.databinding.FragmentHomeBinding
 import com.m3.weathervue.home.viewmodel.HomeViewModel
 import com.m3.weathervue.home.viewmodel.HomeViewModelFactory
+import com.m3.weathervue.map.MapsFragmentDirections
 import com.m3.weathervue.model.Repository
 import com.m3.weathervue.model.WeatherResponse
 import kotlinx.coroutines.launch
@@ -87,6 +88,16 @@ lateinit var myFusedLocationProviderClient: FusedLocationProviderClient
         binding.weekRecyclerview.apply {
             adapter=dailyAdapter
         }
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        builder.setTitle("Access current location by")
+            .setNegativeButton("GPS") { dialog, _ ->
+                dialog.dismiss()
+            }.setPositiveButton("Map") { dialog, _ ->
+
+                dialog.dismiss()
+
+            }
+        builder.create().show()
 
 
         lifecycleScope.launch{

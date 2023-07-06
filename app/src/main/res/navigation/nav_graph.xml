@@ -18,6 +18,12 @@
         <action
             android:id="@+id/action_favoritesFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <argument
+            android:name="latitude"
+            app:argType="long" />
+        <argument
+            android:name="longitude"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/alertsFragment"
@@ -33,5 +39,13 @@
         android:id="@+id/mapsFragment"
         android:name="com.m3.weathervue.map.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <argument
+            android:name="fragmentName"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

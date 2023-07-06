@@ -16,4 +16,5 @@
     <string name="kelvin">Kelvin</string>
     <string name="meter">meter/sec</string>
     <string name="miles">miles/hour</string>
+    <string name="back">Back</string>
 </resources>
