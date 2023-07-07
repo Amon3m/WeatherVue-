@@ -10,7 +10,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import com.m3.weathervue.R
 import com.m3.weathervue.databinding.FragmentFavoritesBinding
-import com.m3.weathervue.map.MapsFragmentArgs
 
 
 class FavoritesFragment : Fragment() {
