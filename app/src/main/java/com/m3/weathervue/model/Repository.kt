@@ -2,13 +2,12 @@ package com.m3.weathervue.model
 
 
 import com.example.productsmvvm.network.RemoteSource
-import kotlinx.coroutines.Dispatchers
+import com.m3.weathervue.database.ConcreteLocalSource
 import kotlinx.coroutines.flow.*
-import retrofit2.Response
 
 
 class Repository private constructor(
-    var remoteSource: RemoteSource
+    var remoteSource: RemoteSource,var concreteLocalSource: ConcreteLocalSource
 ) : RepoInterface {
 
 
@@ -16,9 +15,10 @@ class Repository private constructor(
         private var instance: Repository? = null
         fun getInstance(
             remoteSource: RemoteSource,
+            concreteLocalSource: ConcreteLocalSource
         ): Repository {
             return instance ?: synchronized(this) {
-                val temp = Repository(remoteSource)
+                val temp = Repository(remoteSource, concreteLocalSource)
                 instance = temp
                 temp
             }
@@ -36,6 +36,18 @@ class Repository private constructor(
         appid: String
     ): Flow<WeatherResponse> {
         return flowOf(remoteSource.getWeatherFromNetwork(lat,lon,exclude,units,lang,appid))
+    }
+
+    override fun getFavoritesFromDatabase(): Flow<List<FavoritesModel>> {
+        return concreteLocalSource.getFavoritesLocation()
+    }
+
+    override suspend fun addToFavorites(favorite: FavoritesModel) {
+        concreteLocalSource.insert(favorite)
+    }
+
+    override suspend fun deleteFromFavorites(Favorite: FavoritesModel) {
+        concreteLocalSource.delete(Favorite)
     }
 
 

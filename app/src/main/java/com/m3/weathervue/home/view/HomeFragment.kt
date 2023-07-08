@@ -20,20 +20,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.ui.navigateUp
 import com.example.productsmvvm.network.ApiClient
 import com.example.productsmvvm.network.ApiState
 import com.google.android.gms.location.*
-import com.m3.weathervue.PreferenceManager
+import com.m3.weathervue.model.PreferenceManager
 import com.m3.weathervue.R
+import com.m3.weathervue.database.ConcreteLocalSource
 import com.m3.weathervue.databinding.FragmentHomeBinding
+import com.m3.weathervue.favorites.view.FavoritesFragmentDirections
+import com.m3.weathervue.favorites.viewmodel.FavoritesViewModel
+import com.m3.weathervue.favorites.viewmodel.FavouritesViewModelFactory
 import com.m3.weathervue.home.viewmodel.HomeViewModel
 import com.m3.weathervue.home.viewmodel.HomeViewModelFactory
-import com.m3.weathervue.map.view.MapsFragment
+import com.m3.weathervue.map.view.MapsFragmentArgs
 import com.m3.weathervue.map.viewmodel.MapsViewModel
 import com.m3.weathervue.model.Repository
 import com.m3.weathervue.model.WeatherResponse
@@ -43,7 +49,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.log
 
 const val PERMISSION_ID = 97
 
@@ -56,12 +61,14 @@ class HomeFragment : Fragment() {
     lateinit var myFusedLocationProviderClient: FusedLocationProviderClient
     lateinit var preferenceManager: PreferenceManager
     lateinit var mapsViewModel: MapsViewModel
+    lateinit var favoritesViewModel: FavoritesViewModel
+    lateinit var favouritesViewModelFactory: FavouritesViewModelFactory
+    lateinit var drawerLayout: DrawerLayout
+
 
     var gpsLat: Double = 0.0
     var gpsLong: Double = 0.0
-    var  latitude :Double= 0.0
-    var longitude :Double= 0.0
-
+    var isFromFav :Boolean=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +79,13 @@ class HomeFragment : Fragment() {
                 LocationServices.getFusedLocationProviderClient(requireContext())
 
         mapsViewModel=ViewModelProvider(requireActivity()).get(MapsViewModel::class.java)
-        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(ApiClient))
+        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(ApiClient,
+            ConcreteLocalSource(requireContext())))
+
+        favouritesViewModelFactory =
+            FavouritesViewModelFactory(Repository.getInstance(ApiClient, ConcreteLocalSource(requireContext())))
+        favoritesViewModel =
+            ViewModelProvider(requireActivity(), favouritesViewModelFactory).get(FavoritesViewModel::class.java)
         homeViewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
 
 
@@ -89,7 +102,6 @@ class HomeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
        Log.e("isFirstTimeLaunch","${preferenceManager.isFirstTimeLaunch}")
         if (preferenceManager.isFirstTimeLaunch) {showFirstDialogue()}
 
@@ -105,7 +117,8 @@ class HomeFragment : Fragment() {
             adapter = dailyAdapter
         }
 
-        if(preferenceManager.isMapMode){
+        if(preferenceManager.isMapMode && !isFromFav){
+            binding.back.visibility=View.GONE
             val lat =preferenceManager.latitude.toDouble()
             val lon = preferenceManager.longitude.toDouble()
             homeViewModel.getWeather(lat, lon)
@@ -122,7 +135,41 @@ class HomeFragment : Fragment() {
                     homeViewModel.getWeather(lat, lon)
                 }
         }}
+        lifecycleScope.launch {
+            favoritesViewModel.isFromFavFlow.collect {
+                isFromFav=it
 
+                if(it){
+                    binding.back.visibility=View.VISIBLE
+                    //navdrawer disapple
+                    Log.e("isFromFavFlow","$it")
+
+                    lifecycleScope.launch{
+                        favoritesViewModel.favToHome.collect{ latLang ->
+
+                            if (latLang!=null){
+
+                            homeViewModel.getWeather(latLang.latitude,latLang.longitude)}
+                        }
+                    }
+
+                  //  homeViewModel.getWeather(lat,long)}
+                }
+//                else{
+//                    if (preferenceManager.isGpsMode) {
+//                        binding.back.visibility=View.GONE
+//
+//                        getLastLocation()}
+//                    else if(preferenceManager.isMapMode){
+//                        binding.back.visibility=View.GONE
+//                        val lat =preferenceManager.latitude.toDouble()
+//                        val lon = preferenceManager.longitude.toDouble()
+//                        homeViewModel.getWeather(lat, lon)
+//                    }
+//                }
+
+            }
+        }
 
         lifecycleScope.launch {
             homeViewModel.weather.collect {
@@ -143,6 +190,7 @@ class HomeFragment : Fragment() {
                         Log.e("lat and lon", "${data.current?.weather?.get(0)?.icon}")
 
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show()
+
                     }
                     is ApiState.Failure -> {
                         Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
@@ -157,6 +205,15 @@ class HomeFragment : Fragment() {
                 }
 
             }
+        }
+
+        binding.back.setOnClickListener {
+            favoritesViewModel.updateIsFromFav(false)
+       //     Navigation.findNavController(view).navigateUp()
+            val action: HomeFragmentDirections.ActionHomeFragmentToFavoritesFragment =
+                HomeFragmentDirections.actionHomeFragmentToFavoritesFragment(0,0)
+            Navigation.findNavController(requireView()).navigate(action)
+
         }
     }
 
@@ -259,8 +316,10 @@ class HomeFragment : Fragment() {
         super.onResume()
         //2
         Log.e("preferenceManager","${preferenceManager.isGpsMode}")
-        if (preferenceManager.isGpsMode) {
-        getLastLocation()}
+        if (preferenceManager.isGpsMode && !isFromFav) {
+            binding.back.visibility=View.GONE
+
+            getLastLocation()}
     }
 
     //2

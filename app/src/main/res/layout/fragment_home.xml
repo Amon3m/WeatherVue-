@@ -11,16 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/main_ConstraintLayout">
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/back"
+            android:layout_margin="5dp"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:layout_marginTop="16dp"
             android:background="@drawable/rectangle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/back">
 
 
             <TextView
@@ -65,8 +73,8 @@
                 android:id="@+id/imageView"
                 android:layout_width="180dp"
                 android:layout_height="170dp"
-                android:src="@drawable/day_01d"
                 android:adjustViewBounds="true"
+                android:src="@drawable/day_01d"
                 app:layout_constraintBottom_toTopOf="@+id/weather_con"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/temp_txt"

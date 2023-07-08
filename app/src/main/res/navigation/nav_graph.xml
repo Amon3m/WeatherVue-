@@ -19,10 +19,16 @@
         <argument
             android:name="longitude"
             app:argType="long" />
+        <argument
+            android:name="isFromFav"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_homeFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.m3.weathervue.favorites.FavoritesFragment"
+        android:name="com.m3.weathervue.favorites.view.FavoritesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" >
         <action
@@ -34,6 +40,9 @@
         <argument
             android:name="longitude"
             app:argType="long" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/alertsFragment"

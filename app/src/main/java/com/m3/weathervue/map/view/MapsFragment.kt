@@ -22,6 +22,7 @@ import com.m3.weathervue.home.viewmodel.HomeViewModel
 import com.m3.weathervue.map.viewmodel.MapsViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.io.IOException
 import java.util.*
 
 
@@ -62,32 +63,16 @@ class MapsFragment : Fragment() {
                     // Handle negative button click
                     dialog.dismiss()
                 }.setPositiveButton("Yes") { dialog, _ ->
-                    mapsViewModel.updateLocation(latLng)
-                    findNavController(requireView()).navigateUp()
-
-
-
-//                    when (comeFrm) {
-//                        "FavoritesFragment" -> {
-//                            val action: MapsFragmentDirections.ActionMapsFragmentToFavoritesFragment =
-//                                MapsFragmentDirections.actionMapsFragmentToFavoritesFragment(
-//                                    latLng.latitude.toLong(),
-//                                    latLng.longitude.toLong()
-//                                )
-//
-//                            findNavController(requireView()).navigate(action)
-//                        }
-//                        "HomeFragment" -> {
-//                            val action: MapsFragmentDirections.ActionMapsFragmentToHomeFragment =
-//                                MapsFragmentDirections.actionMapsFragmentToHomeFragment(
-//                                    latLng.latitude.toLong(),
-//                                    latLng.longitude.toLong()
-//                                )
-//                            findNavController(requireView()).navigate(action)
-//
-//
-//                        }
-//                    }
+                    when (comeFrm) {
+                        "FavoritesFragment" -> {
+                            mapsViewModel.updateFavLocation(latLng)
+                            findNavController(requireView()).navigateUp()
+                        }
+                        "HomeFragment" -> {
+                            mapsViewModel.updateLocation(latLng)
+                            findNavController(requireView()).navigateUp()
+                        }
+                    }
 
                     dialog.dismiss()
                 }
@@ -112,7 +97,7 @@ class MapsFragment : Fragment() {
         mapsViewModel=ViewModelProvider(requireActivity()).get(MapsViewModel::class.java)
         comeFrm = MapsFragmentArgs.fromBundle(requireArguments()).fragmentName as String
 
-        Log.e("name ", "$comeFrm ")
+        Log.e("comeFrm map", "$comeFrm ")
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
@@ -125,18 +110,20 @@ class MapsFragment : Fragment() {
 
     fun geocodingConvert(lat: Double, lon: Double): String {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
-        val addressList: List<Address>? = geocoder.getFromLocation(lat, lon, 1)
         var addressLine: String = ""
-        if (addressList != null && addressList.isNotEmpty()) {
-            val address: Address = addressList[0]
-            addressLine = address.getAddressLine(0)
-
-            Log.e("loc", "$addressLine ")
+        try {
+            val addressList: List<Address>? = geocoder.getFromLocation(lat, lon, 1)
+            if (addressList != null && addressList.isNotEmpty()) {
+                val address: Address = addressList[0]
+                addressLine = address.getAddressLine(0)
+            }
+        } catch (e: IOException) {
+            // Handle the IOException (e.g., display an error message or log the exception)
+            Log.e("Geocoding", "IOException: ${e.message}")
         }
-        // val lastString = addressLine.substringAfterLast(",").trim()
-
         return addressLine
     }
+
 
 
 }

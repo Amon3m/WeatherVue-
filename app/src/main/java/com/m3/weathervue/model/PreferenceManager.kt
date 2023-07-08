@@ -1,4 +1,4 @@
-package com.m3.weathervue
+package com.m3.weathervue.model
 
 import android.content.Context
 import android.content.SharedPreferences

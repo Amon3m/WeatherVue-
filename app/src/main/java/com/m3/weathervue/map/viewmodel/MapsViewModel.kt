@@ -10,8 +10,18 @@ class MapsViewModel: ViewModel() {
         val locationFlow: StateFlow<LatLng?>
             get() = _locationFlow
 
+    private val _favLocationFlow = MutableStateFlow<LatLng?>(null)
+    val favLocationFlow: StateFlow<LatLng?>
+        get() = _favLocationFlow
+
         fun updateLocation(latLng: LatLng) {
             _locationFlow.value = latLng
         }
+        fun updateFavLocation(latLng: LatLng) {
+            _favLocationFlow.value = latLng
+        }
+
+
+
 
 }

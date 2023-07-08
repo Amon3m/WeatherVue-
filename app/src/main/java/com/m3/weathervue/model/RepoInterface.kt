@@ -13,8 +13,7 @@ interface RepoInterface {
         lang:String,
         appid:String
     ): Flow<WeatherResponse>
-//    fun getProductsFromDatabase(): Flow<List<Product>>
-//    suspend fun cacheProducts(products: List<Product>)
-//    suspend fun addToFavorites(product: Product)
-//    suspend fun deleteFromFavorites(product: Product)
+    fun getFavoritesFromDatabase(): Flow<List<FavoritesModel>>
+    suspend fun addToFavorites(favorite: FavoritesModel)
+    suspend fun deleteFromFavorites(Favorite: FavoritesModel)
 }
