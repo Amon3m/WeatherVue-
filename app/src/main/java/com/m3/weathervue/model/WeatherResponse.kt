@@ -107,7 +107,7 @@ data class Current(
 	val sunrise: Int? = null,
 
 	@field:SerializedName("temp")
-	val temp: Any? = null,
+	val temp: String? = null,
 
 	@field:SerializedName("visibility")
 	val visibility: Int? = null,

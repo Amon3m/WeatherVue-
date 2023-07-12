@@ -1,5 +1,6 @@
 package com.m3.weathervue
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -20,17 +21,36 @@ import com.m3.weathervue.database.ConcreteLocalSource
 import com.m3.weathervue.databinding.ActivityMainBinding
 import com.m3.weathervue.favorites.viewmodel.FavoritesViewModel
 import com.m3.weathervue.favorites.viewmodel.FavouritesViewModelFactory
+import com.m3.weathervue.model.PreferenceManager
 import com.m3.weathervue.model.Repository
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     lateinit var favoritesViewModel: FavoritesViewModel
     lateinit var favouritesViewModelFactory: FavouritesViewModelFactory
+    lateinit var preferenceManager:PreferenceManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferenceManager = PreferenceManager.getInstance(this)
+
+        if (!preferenceManager.language.isNullOrEmpty()){
+            when(preferenceManager.language){
+                "en" -> {
+                    setAppLocale("en")
+
+
+                }
+                "ar" -> {
+                    setAppLocale("ar")
+
+                }
+            }
+        }
+
         favouritesViewModelFactory =
             FavouritesViewModelFactory(Repository.getInstance(ApiClient, ConcreteLocalSource(this)))
         favoritesViewModel =
@@ -76,4 +96,14 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+    private fun setAppLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+
+        val configuration = Configuration()
+        configuration.setLocale(locale)
+        configuration.setLayoutDirection(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+    }
+
 }

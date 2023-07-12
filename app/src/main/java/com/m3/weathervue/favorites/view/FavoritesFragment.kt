@@ -1,7 +1,9 @@
 package com.m3.weathervue.favorites.view
 
+import android.content.Context
 import android.location.Address
 import android.location.Geocoder
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,15 +12,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.productsmvvm.network.ApiClient
 import com.google.android.gms.maps.model.LatLng
+import com.m3.weathervue.R
 import com.m3.weathervue.database.ConcreteLocalSource
 import com.m3.weathervue.databinding.FragmentFavoritesBinding
 import com.m3.weathervue.favorites.viewmodel.FavoritesViewModel
 import com.m3.weathervue.favorites.viewmodel.FavouritesViewModelFactory
+import com.m3.weathervue.home.view.HomeFragmentDirections
 import com.m3.weathervue.map.viewmodel.MapsViewModel
 import com.m3.weathervue.model.FavoritesModel
 import com.m3.weathervue.model.Repository
@@ -105,19 +110,26 @@ lateinit var favouritesViewModelFactory: FavouritesViewModelFactory
 
     override fun onFavClick(favoritesModel: FavoritesModel) {
         Log.e("isFromFavFlow","favoritesModel ${(favoritesModel.latitude)}")
-
+    if(isNetworkAvailable(requireContext())) {
         val action: FavoritesFragmentDirections.ActionFavoritesFragmentToHomeFragment =
-            FavoritesFragmentDirections.actionFavoritesFragmentToHomeFragment(favoritesModel.latitude.toLong(),
-                favoritesModel.longitudeval.toLong()
-            ,true
+            FavoritesFragmentDirections.actionFavoritesFragmentToHomeFragment(
+                favoritesModel.latitude.toLong(),
+                favoritesModel.longitudeval.toLong(), true
 
             )
         findNavController(requireView()).navigate(action)
 
-        favoritesViewModel.updateFavToHome(LatLng(favoritesModel.latitude,favoritesModel.longitudeval))
+        favoritesViewModel.updateFavToHome(
+            LatLng(
+                favoritesModel.latitude,
+                favoritesModel.longitudeval
+            )
+        )
         favoritesViewModel.updateIsFromFav(true)
 
-
+    }else{
+        showNoInternetDialogue(requireContext(), view as View)
+    }
     }
 
     override fun onDeleteClick(favoritesModel: FavoritesModel) {
@@ -138,6 +150,30 @@ lateinit var favouritesViewModelFactory: FavouritesViewModelFactory
         val lastString = addressLine.substringAfterLast(",").trim()
 
         return lastString
+    }
+    fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+    fun showNoInternetDialogue(context: Context, view:View) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+        builder.setTitle(context.getString(R.string.no_Internet))
+            .setPositiveButton("retry") { dialog, _ ->
+
+
+                val action: FavoritesFragmentDirections.ActionFavoritesFragmentToHomeFragment =
+                    FavoritesFragmentDirections.actionFavoritesFragmentToHomeFragment(0,0,false)
+
+                findNavController(view).navigate(action)
+                dialog.dismiss()
+
+            }
+
+        builder.setCancelable(false)
+        builder.create().show()
+
+
     }
 
 

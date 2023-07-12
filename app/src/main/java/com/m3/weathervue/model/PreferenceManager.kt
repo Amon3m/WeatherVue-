@@ -40,7 +40,7 @@ class PreferenceManager private constructor(context: Context) {
         set(value) = sharedPreferences.edit().putLong(PREF_LONGITUDE, value).apply()
 
     var language: String?
-        get() = sharedPreferences.getString(PREF_LANGUAGE, null)
+        get() = sharedPreferences.getString(PREF_LANGUAGE, "en")
         set(value) = sharedPreferences.edit().putString(PREF_LANGUAGE, value).apply()
 
     var isGpsMode: Boolean

@@ -9,20 +9,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.m3.weathervue.R
-import com.m3.weathervue.databinding.HoursItemBinding
 import com.m3.weathervue.databinding.WeekItemBinding
 import com.m3.weathervue.model.DailyItem
-import com.m3.weathervue.model.HourlyItem
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class DailyAdapter (val context: Context)
+class DailyAdapter(val context: Context, temperatureMode: String?, language: String?)
     :ListAdapter<DailyItem,DailyViewHolder>(DailyDiffUtil()) {
     lateinit var binding: WeekItemBinding
     var  timeZone:String="UTC"
+    private var temperatureMode: String = temperatureMode ?: ""
+    private var lang:String=language?:""
 
 
 
@@ -56,28 +58,59 @@ class DailyAdapter (val context: Context)
             "50n"->img.setImageResource(R.drawable.night_50n)
 
         }
-        holder.binding.tempCon.text=currentObject.weather?.get(0)?.main
+        holder.binding.tempCon.text=currentObject.weather?.get(0)?.description
+        if (lang=="ar"){
+        holder.binding.lowTemp.text=convertNumbersToArabic(currentObject.temp?.day.toString().substringBefore("."))
+        holder.binding.highTemp.text=convertNumbersToArabic(currentObject.temp?.night.toString().substringBefore("."))
+        holder.binding.lowTemp.append("°$temperatureMode")}
+        else{
+            holder.binding.lowTemp.text=(currentObject.temp?.day.toString().substringBefore("."))
+            holder.binding.highTemp.text=(currentObject.temp?.night.toString().substringBefore("."))
+            holder.binding.highTemp.append("°$temperatureMode")}
+        }
 
-        holder.binding.lowTemp.text=(currentObject.temp?.day.toString().substringBefore("."))
-        holder.binding.highTemp.text=(currentObject.temp?.night.toString().substringBefore("."))
 
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun convertDate(dt: Long?, timeZone: String?): String {
+        val dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(dt as Long), ZoneId.of(timeZone))
+        var locale = Locale("en")
+        if (lang == "ar") {
+            locale = Locale(lang)
+        }
+
+        val dateFormatter = DateTimeFormatter.ofPattern("EEEE", locale)
+        val formattedDate = dateTime.format(dateFormatter)
+
+        if (lang == "ar") {
+            val easternArabicNumerals = '\u0660'.toInt()..'٩'.toInt()
+            val westernArabicNumerals = '0'.toInt()..'9'.toInt()
+            val easternArabicDigits = easternArabicNumerals.map { it.toChar() }
+            val westernArabicDigits = westernArabicNumerals.map { it.toChar() }
+
+            val digitMap = westernArabicDigits.zip(easternArabicDigits).toMap()
+            val easternArabicFormattedDate = formattedDate.map { digitMap.getOrElse(it) { it } }
+            return easternArabicFormattedDate.joinToString(separator = "")
+        }
+
+        return formattedDate
+    }
+    }
+
+    fun convertNumbersToArabic(arabicNumber: String): String {
+        val number = arabicNumber.toFloatOrNull() ?: return ""
+        val locale = Locale("ar")
+        val symbols = DecimalFormatSymbols(locale).apply {
+            zeroDigit = '\u0660'
+            groupingSeparator = ','
+        }
+        val formatter = DecimalFormat("#,###.##", symbols)
+        return formatter.format(number)
     }
 
 
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    private fun convertDate(dt: Long?, timeZone: String): String {
-//        val dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(dt as Long), ZoneId.of(timeZone))
-//        return dateTime.format(DateTimeFormatter.ofPattern("h a"))
-//
-//    }
-@RequiresApi(Build.VERSION_CODES.O)
-fun convertDate(dt: Long?, timeZone: String?): String {
-    val dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(dt as Long), ZoneId.of(timeZone))
-    return dateTime.format(DateTimeFormatter.ofPattern("EEEE", Locale.ENGLISH))
-}
-}
+
 
 class DailyViewHolder(var binding: WeekItemBinding):RecyclerView.ViewHolder(binding.root)
 

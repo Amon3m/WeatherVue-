@@ -10,18 +10,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.Navigation.findNavController
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.m3.weathervue.R
-import com.m3.weathervue.home.viewmodel.HomeViewModel
 import com.m3.weathervue.map.viewmodel.MapsViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import java.io.IOException
 import java.util.*
 
@@ -57,12 +52,12 @@ class MapsFragment : Fragment() {
 
             var loc = geocodingConvert(latLng.latitude, latLng.longitude)
             val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            builder.setTitle("Are you sure you want to select this location?")
+            builder.setTitle(getString(R.string.map_dialog))
                 .setMessage("$loc")
-                .setNegativeButton("No") { dialog, _ ->
+                .setNegativeButton(getString(R.string.no)) { dialog, _ ->
                     // Handle negative button click
                     dialog.dismiss()
-                }.setPositiveButton("Yes") { dialog, _ ->
+                }.setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                     when (comeFrm) {
                         "FavoritesFragment" -> {
                             mapsViewModel.updateFavLocation(latLng)
@@ -110,18 +105,27 @@ class MapsFragment : Fragment() {
 
     fun geocodingConvert(lat: Double, lon: Double): String {
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
-        var addressLine: String = ""
-        try {
-            val addressList: List<Address>? = geocoder.getFromLocation(lat, lon, 1)
-            if (addressList != null && addressList.isNotEmpty()) {
-                val address: Address = addressList[0]
-                addressLine = address.getAddressLine(0)
+        var city = ""
+        var country = ""
+        var retryCount = 0
+
+        while (retryCount < 3) {
+            try {
+                val addressList: List<Address>? = geocoder.getFromLocation(lat, lon, 1)
+                if (addressList != null && addressList.isNotEmpty()) {
+                    val address: Address = addressList[0]
+                    city = address.adminArea ?: ""
+                    country = address.countryName ?: ""
+                    Log.e("loc", "City: $city, Country: $country")
+                    address.adminArea
+                }
+                break
+            } catch (e: IOException) {
+                e.printStackTrace()
+                retryCount++
             }
-        } catch (e: IOException) {
-            // Handle the IOException (e.g., display an error message or log the exception)
-            Log.e("Geocoding", "IOException: ${e.message}")
         }
-        return addressLine
+        return "$city,$country"
     }
 
 

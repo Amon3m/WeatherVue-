@@ -24,9 +24,25 @@
     <string name="gps">GPS</string>
     <string name="temperature">temperature</string>
     <string name="celsius">Celsius</string>
-    <string name="kelvin">Kelvin</string>
     <string name="fahrenheit">Fahrenheit</string>
+    <string name="kelvin">Kelvin</string>
+
     <string name="meter">meter/sec</string>
     <string name="miles">miles/hour</string>
     <string name="back">Back</string>
+    <string name="allow_access_to_your_location_so_that_the_program_can_fetch_the_weather">Allow access to your location so that the program can fetch the weather</string>
+    <string name="allow_map">Allow Map</string>
+    <string name="allow_gps">Allow gps</string>
+    <string name="no_Internet">No Internet Connection</string>
+    <string name="temperature_nand_wind_speed_unit">Temperature \nand wind speed unit</string>
+    <string name="fahrenheit_miles_hour">fahrenheit (miles/hour)</string>
+    <string name="celsius_meter_sec">celsius (meter/sec)</string>
+    miles/hour
+    <string name="meters_second">m/s</string>
+    <string name="miles_hour">mph</string>
+    <string name="kelvin_meter_sec">kelvin (meter/sec)</string>
+    <string name="map_dialog">Are you sure you want to select this location?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+
 </resources>

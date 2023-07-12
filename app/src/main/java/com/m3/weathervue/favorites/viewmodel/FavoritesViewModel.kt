@@ -12,9 +12,10 @@ import kotlinx.coroutines.launch
 
 class FavoritesViewModel(private val repoInterface: RepoInterface) : ViewModel() {
 
-    private var _favLocations = MutableStateFlow<List<FavoritesModel>>(listOf())
+    private val _favLocations = MutableStateFlow<List<FavoritesModel>>(listOf())
     val favLocations: StateFlow<List<FavoritesModel>>
         get() = _favLocations
+
 
     private val _isFromFavFlow = MutableStateFlow<Boolean>(false)
     val isFromFavFlow: StateFlow<Boolean>
@@ -49,6 +50,8 @@ class FavoritesViewModel(private val repoInterface: RepoInterface) : ViewModel()
             repoInterface.deleteFromFavorites(favoriteItem)
         }
     }
+
+
     fun addToFavorites(favoriteItem: FavoritesModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repoInterface.addToFavorites(favoriteItem)
