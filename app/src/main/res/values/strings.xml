@@ -44,5 +44,7 @@
     <string name="map_dialog">Are you sure you want to select this location?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="save">save</string>
+    <string name="select_time">select time</string>
 
 </resources>

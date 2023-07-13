@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/alertsFragment"
-        android:name="com.m3.weathervue.alerts.AlertsFragment"
+        android:name="com.m3.weathervue.alerts.view.AlertsFragment"
         android:label="Alerts"
         tools:layout="@layout/fragment_alerts" />
     <fragment

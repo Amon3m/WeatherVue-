@@ -37,7 +37,7 @@ class FavoritesViewModel(private val repoInterface: RepoInterface) : ViewModel()
     init {
         getFavLocations()    }
 
-    private fun getFavLocations() {
+     fun getFavLocations() {
         viewModelScope.launch(Dispatchers.IO) {
             repoInterface.getFavoritesFromDatabase().collect {
                 _favLocations.emit(it)

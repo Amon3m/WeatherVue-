@@ -3,11 +3,12 @@ package com.m3.weathervue.model
 
 import com.example.productsmvvm.network.RemoteSource
 import com.m3.weathervue.database.ConcreteLocalSource
+import com.m3.weathervue.database.LocalSource
 import kotlinx.coroutines.flow.*
 
 
 class Repository private constructor(
-    var remoteSource: RemoteSource,var concreteLocalSource: ConcreteLocalSource
+    var remoteSource: RemoteSource,var concreteLocalSource: LocalSource
 ) : RepoInterface {
 
 
@@ -15,7 +16,7 @@ class Repository private constructor(
         private var instance: Repository? = null
         fun getInstance(
             remoteSource: RemoteSource,
-            concreteLocalSource: ConcreteLocalSource
+            concreteLocalSource: LocalSource
         ): Repository {
             return instance ?: synchronized(this) {
                 val temp = Repository(remoteSource, concreteLocalSource)
